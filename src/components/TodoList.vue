@@ -3,11 +3,21 @@
       <transition-group name="list" tag="ul">
         <!-- <ul> -->
             <!-- <li v-for="(todoItem,index) in propsdataC" v-bind:key="todoItem.item" class="shadow"> -->
-            <li v-for="(todoItem,index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow">
+            <!-- <li v-for="(todoItem,index) in this.$store.state.todoItems" v-bind:key="todoItem.item" class="shadow"> -->
+            <li v-for="(todoItem,index) in this.getTodoItems" v-bind:key="todoItem.item" class="shadow">
+                <!-- <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted:todoItem.completed}" 
+                    v-on:click="toggleComplete(todoItem,index)">
+                </i> -->
                 <i class="checkBtn fas fa-check" v-bind:class="{checkBtnCompleted:todoItem.completed}" 
-                    v-on:click="toggleComplete(todoItem,index)"></i>
+                    v-on:click="toggleComplete({todoItem,index})">
+                </i>
                 <span v-bind:class="{textCompleted:todoItem.completed}">{{todoItem.item}}</span>
-                <span class="removeBtn" v-on:click="removeTodo(todoItem,index)">
+                <!-- <span class="removeBtn" 
+                    v-on:click="removeTodo(todoItem,index)">
+                    <i class="fas fa-trash-alt"></i>              
+                </span> -->
+                <span class="removeBtn" 
+                    v-on:click="removeTodo({todoItem,index})">
                     <i class="fas fa-trash-alt"></i>              
                 </span>
             </li>
@@ -17,21 +27,26 @@
 </template>
 
 <script>
+import {mapGetters,mapMutations} from 'vuex';
 export default {
     // props:['propsdataC'],    
     methods:{
-        removeTodo: function(todoItem,index){
-            // this.$emit('removeTodoP',todoItem,index);
-            this.$store.commit('removeTodo',{todoItem,index})            
-        },
-        toggleComplete:function(todoItem,index){          
-            // this.$emit('toggleCompleteP',todoItem,index);            
-            this.$store.commit('toggleComplete',{todoItem,index})
-        },
+        // removeTodo: function(todoItem,index){
+        //     // this.$emit('removeTodoP',todoItem,index);
+        //     this.$store.commit('removeTodo',{todoItem,index})            
+        // },
+        // toggleComplete:function(todoItem,index){          
+        //     // this.$emit('toggleCompleteP',todoItem,index);            
+        //     this.$store.commit('toggleComplete',{todoItem,index})
+        // },
+        ...mapMutations(['removeTodo','toggleComplete'])
+    },
+    computed:{
+      // getTodoItems(){
+      //   return this.$store.getters.getTodoItems;
+      // }
+      ...mapGetters(['getTodoItems']),
     }
-    
-
-    
 }
 </script>
 
